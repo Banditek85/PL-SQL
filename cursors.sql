@@ -63,3 +63,21 @@ dbms_output.put_line('started');
     END IF;
     END LOOP;
 END;
+
+
+-- You can also declare pl/sql record type based on a cursor.
+DECLARE
+CURSOR record_cursor IS
+SELECT employee_id, first_name FROM employees
+WHERE department_id = 30;
+
+-- Instead of [table_name]%ROWTYPE we are declaring variable based on cursor rowtype:
+v_emp_rec record_cursor%ROWTYPE;
+BEGIN
+  OPEN record_cursor;
+  LOOP
+    FETCH record_cursor INTO v_emp_rec;
+    EXIT WHEN record_cursor%NOTFOUND;
+    dbms_output.put_line(v_emp_rec.employee_id || ' ' || v_emp_rec.first_name);
+  END LOOP
+END;
