@@ -9,6 +9,7 @@ BEGIN
 dbms_output.put_line('started');
 OPEN c_cny;
     LOOP
+    -- We are fetching the cursor into the %TYPE variables
     FETCH c_cny INTO v_cny_name;
     EXIT WHEN c_cny%NOTFOUND;
     dbms_output.put_line(v_cny_name);
@@ -36,7 +37,7 @@ BEGIN
   CLOSE employees_cur;
 END;
 
--- Cursor FOR loop is the most simple way to use cursors. Open, fetch and close are done automatically. You use it when you need all rows from the cursor query.
+-- Cursor FOR loop is the most simple way to use cursors. Open, fetch and close are done automatically when there are no more rows left to fetch or if there is some other reason. You use it when you need all rows from the cursor query.
 
 DECLARE 
 CURSOR my_cursor is SELECT id, name FROM employees;
@@ -58,7 +59,7 @@ BEGIN
 dbms_output.put_line('started');
     FOR i IN c_cny LOOP
     IF c_cny%NOTFOUND THEN
-    dbms_output.put_line('not found');
+    dbms_output.put_line('You will not see this line.');
     END IF;
     END LOOP;
 END;
