@@ -36,9 +36,9 @@ DECLARE
 BEGIN
     v_arr := my_varray('one', 'two', 'three', 'four', 'five'); 
     len := v_arr.count;
-    FOR i in 1..len loop
+    FOR i IN 1..len loop
     dbms_output.put_line(v_arr(i));
-    end loop;
+    END LOOP;
 END;
 
 -- NESTED TABLES
@@ -54,8 +54,7 @@ END;
 -- Key/value structure analogous to dictionary or map data-types; primary key is of integer OR string data type and value of scalar or record data type. Does not use a constructor function for initialization!
 
 DECLARE 
-    TYPE t_ibt IS TABLE OF VARCHAR2(100) 
-    INDEX BY VARCHAR2(10);
+    TYPE t_ibt IS TABLE OF VARCHAR2(100) INDEX BY VARCHAR2(10);
     myibt t_ibt;
 BEGIN
     myibt('first') := 'one';
