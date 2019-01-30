@@ -1,5 +1,5 @@
--- Bulk binding is used to reduce the amount of code and more importantly to reduce context switches between SQL and PL/SQL
--- engines. Every time you have a non-SELECT DML statement inside any kind of loop, you should consider switching to bulk binding. 
+-- Bulk binding is used to reduce context switches between SQL and PL/SQL
+-- engines inside PL/SQL program and with that improve performance. Every time you have a non-SELECT DML statement inside any kind of loop, you should consider switching to bulk binding. 
 
 declare
     type string_table is table of varchar2(50);
@@ -20,7 +20,6 @@ begin
 and inserts the value:
 */
 select first_name bulk collect into t_names from employees;
-
 -- Printing the nested table:
     for i in t_names.first..t_names.last
     loop
@@ -28,8 +27,7 @@ select first_name bulk collect into t_names from employees;
     end loop;
 end;
 
-/* PL/SQL collections are held in memory, which on large data sets can represent performance problem. For this reason LIMIT clause
-is provided which is used to fetch and process smaller chunks of data in phases */
+/* PL/SQL collections are held in memory, which on large data sets can represent performance problem. For this reason LIMIT clause is provided which is used to fetch and process smaller chunks of data in phases */
 
 DECLARE
 -- Declaring a collection type and collection type variable to temporarily store the data
@@ -37,18 +35,19 @@ DECLARE
   v_buffer t_buffer := new t_buffer();
   
 -- Declaring the cursor  
-  CURSOR c_data IS 
-                SELECT country_name FROM countries;
+  CURSOR c_data IS SELECT country_name
+                   FROM countries;
                 
 BEGIN
   OPEN c_data;
     LOOP
+    -- This time we use BULK COLLECT with FETCH INTO clause instead of SELECT
       FETCH c_data BULK COLLECT INTO v_buffer
       LIMIT 5;
-      -- When cursor did not fetch anything, exit the loop
+      -- When cursor doesn't fetch anything, exit the loop, because it reached the end of the data set.
       EXIT WHEN v_buffer.COUNT = 0;
       
-      -- Process the data here
+      -- Inner loop to process individual elements in this particular chunk.
         FOR i IN 1..v_buffer.COUNT
           LOOP
             dbms_output.put_line(v_buffer(i)); 
@@ -58,8 +57,7 @@ BEGIN
 END;
 /
 
--- Without using the LIMIT clause all of the data can be fetched at once and is available in the collection after the fetch
--- completes
+-- Without using the LIMIT clause all of the data can be fetched at once and is available in the collection after the fetch completes. It can also be used to fetch only a subset of the data-set, e.g. first 10 rows.
 
 DECLARE
   TYPE t_buffer IS TABLE OF countries.country_name%TYPE;
@@ -74,8 +72,7 @@ BEGIN
   CLOSE c_data;
 END;
 
-
--- Or fetch just first 10 rows in the table
+-- Fetch only first 10 rows
 /*
 BEGIN
    OPEN c_data;
@@ -84,13 +81,3 @@ BEGIN
    CLOSE c_data;
  END;
 */ 
-
-
-
-
-
-
-
-
-
-
