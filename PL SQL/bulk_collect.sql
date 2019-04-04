@@ -7,7 +7,6 @@ declare
     c number := 0;
 begin
 /* Manually populating the t_names nested table with implicit cursor
-
   for i in (select first_name from employees)
   loop
     c := c + 1;
@@ -19,7 +18,8 @@ begin
 /* Shorter way of doing same thing as above is with bulk collect (here used with implicit cursor), which implicitly extends collection
 and inserts the value:
 */
-select first_name bulk collect into t_names from employees;
+select first_name bulk collect 
+into t_names from employees;
 -- Printing the nested table:
     for i in t_names.first..t_names.last
     loop
@@ -64,20 +64,34 @@ DECLARE
   v_buffer t_buffer := new t_buffer();
   
   CURSOR c_data IS 
-                SELECT country_name FROM countries;
+  SELECT country_name FROM countries;
 
 BEGIN
   OPEN c_data;
-    FETCH c_data BULK COLLECT INTO v_buffer;
+    FETCH c_data BULK COLLECT INTO v_buffer
+    LIMIT 10;
   CLOSE c_data;
 END;
 
--- Fetch only first 10 rows
-/*
+
+-- REF Cursor is a PL/SQL data-type that holds a reference to a certain SQL statement, which can be passed back to the client and be opened with different queries.
+DECLARE
+    TYPE books_rec IS RECORD (
+    book_category books.book_category%TYPE,
+    book_title    books.book_title%TYPE);
+    
+    l_ref_cur SYS_REFCURSOR;
+    l_books_rec books_rec;  
 BEGIN
-   OPEN c_data;
-     FETCH c_data BULK COLLECT INTO v_buffer
-     LIMIT 10;
-   CLOSE c_data;
- END;
-*/ 
+-- we open ref cursor type for this particular query (could be something else)
+OPEN l_ref_cur FOR SELECT book_category, book_title 
+                   FROM books;
+LOOP
+-- fetching cursor data set into a record in a loop
+    FETCH l_ref_cur INTO l_books_rec;
+    EXIT WHEN l_ref_cur%NOTFOUND;
+    dbms_output.put_line(l_books_rec.book_title);
+END LOOP;
+CLOSE l_ref_cur;
+END;
+/
