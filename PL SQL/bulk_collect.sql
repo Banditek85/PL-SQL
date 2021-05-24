@@ -73,7 +73,6 @@ BEGIN
   CLOSE c_data;
 END;
 
-
 -- REF Cursor is a PL/SQL data-type that holds a reference to a certain SQL statement, which can be passed back to the client and be opened with different queries.
 DECLARE
     TYPE books_rec IS RECORD (

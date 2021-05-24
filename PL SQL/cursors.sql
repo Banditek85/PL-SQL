@@ -85,7 +85,6 @@ END;
 
 
 -- REF cursor 
-
 CREATE OR REPLACE PROCEDURE authors_list(p_membership NUMBER default NULL) AS
 
     l_cursor   SYS_REFCURSOR;
