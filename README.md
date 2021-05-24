@@ -1,2 +1,2 @@
 # PL-SQL
-Repository for Oracle SQL and PL/SQL related stuff
+Repository for Oracle SQL and PL/SQL related topics

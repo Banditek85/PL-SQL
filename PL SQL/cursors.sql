@@ -3,7 +3,7 @@ Inside PL/SQL blocks we use cursors to declare pointers to active sets of SELECT
 
 Implicit cursors are created automatically by Oracle when select and other DML statements are executed, it's attributes are accessed by SQL%attribute_name syntax. 
 
-Explicit cursors we declare ourselves and are pertinent only for SELECT statements that return more than one rows.
+Explicit cursors we declare ourselves and are pertinent only for SELECT statements that return more than one row.
 
 We can fetch values from cursors into %TYPE variables or composite data types such as collections.
 
@@ -68,7 +68,8 @@ BEGIN
 END;
 
 /* 
-If cursor query does not return any rows, %NOTFOUND attribute is not useful, as the if statement is never evaluated. Below code inside if statement never runs, as there is no country name like 'ole'
+If cursor query does not return any rows, looping through cursor and checking %NOTFOUND attribute is not useful,
+// as the if statement is never evaluated. Below code inside if statement never runs, as there is no country name like 'ole'
 */
 DECLARE
     CURSOR c_cny IS 
@@ -77,6 +78,7 @@ DECLARE
 BEGIN
 dbms_output.put_line('started');
     FOR i IN c_cny LOOP
+    -- This will not get evaluated because loop will never run
     IF c_cny%NOTFOUND THEN
     dbms_output.put_line('You will not see this line.');
     END IF;
