@@ -1,7 +1,5 @@
 CREATE OR REPLACE PACKAGE BODY STARTER
 AS
-BEGIN
-
 FUNCTION render (
     p_region              IN apex_plugin.t_region,
     p_plugin              IN apex_plugin.t_plugin,
@@ -12,6 +10,24 @@ AS
 EGIN
     -- plugin attributes defined on plugin apex page
     v_plugin_param_1 := p_region.attribute_01;
+        p_region              IN apex_plugin.t_region,
+        p_plugin              IN apex_plugin.t_plugin,
+        p_is_printer_friendly IN BOOLEAN )
+        RETURN apex_plugin.t_region_render_result
+    AS
+        v_result apex_plugin.t_region_render_result;
+    BEGIN
+        apex_css.add_file(
+          p_name      => './my_css_file',
+          p_directory => p_plugin.file_prefix,
+          p_version   => '1.0');
+
+        apex_javascript.add_library(
+          p_name      => './my_js_file',
+          p_directory => p_plugin.file_prefix,
+          p_version   => '1.0');
+          
+        apex_javascript.add_onload_code(p_code => 'console.log(''Hello World!'')');
 
     -- p_plugin.file_prefix defined on apex plugin page (Files section)
     apex_css.add_file(
