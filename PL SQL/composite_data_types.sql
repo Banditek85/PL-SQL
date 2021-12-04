@@ -11,19 +11,19 @@ v_second competitors.compet_description%type
 );
 v_myType myType;
 BEGIN
--- We access fields in a record through a dot notation 
-v_myType.v_first := 'some name';
-v_myType.v_second := 'some description';
-dbms_output.put_line(v_myType.v_first || ' ' || v_myType.v_second);
-END;
+-- We access fields in a record through a dot notation
+    v_myType.v_first := 'some name';
+    v_myType.v_second := 'some description';
+    dbms_output.put_line(v_myType.v_first || ' ' || v_myType.v_second);
+END;    
 
 -- %ROWTYPE DATA TYPE IS BASED ON A ROW OF A PARTICULAR TABLE
 DECLARE
 -- Declaring a variable with a %rowtype data type.
-v_compet competitors%ROWTYPE;
+    v_compet competitors%ROWTYPE;
 BEGIN
-v_compet.compet_name := 'Mitja';
-dbms_output.put_line(v_compet.compet_name);
+    v_compet.compet_name := 'Mitja';
+    dbms_output.put_line(v_compet.compet_name);
 END;
 
 -- ** COLLECTIONS

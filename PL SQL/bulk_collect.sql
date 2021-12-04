@@ -1,5 +1,6 @@
--- Bulk binding is used to reduce context switches between SQL and PL/SQL
--- engines inside PL/SQL program and with that improve performance. Every time you have a non-SELECT DML statement inside any kind of loop, you should consider switching to bulk binding. 
+/*
+Bulk binding is used to reduce context switches between SQL and PL/SQL
+engines inside PL/SQL program and with that improve performance. Every time you have a non-SELECT DML statement inside any kind of loop, you should consider switching to bulk binding. */ 
 
 declare
     type string_table is table of varchar2(50);
@@ -27,7 +28,8 @@ into t_names from employees;
     end loop;
 end;
 
-/* PL/SQL collections are held in memory, which on large data sets can represent performance problem. For this reason LIMIT clause is provided which is used to fetch and process smaller chunks of data in phases */
+/* PL/SQL collections are held in memory, which on large data sets can represent performance problem. 
+For this reason LIMIT clause is provided which is used to fetch and process smaller chunks of data in phases */
 
 DECLARE
 -- Declaring a collection type and collection type variable to temporarily store the data
@@ -57,7 +59,8 @@ BEGIN
 END;
 /
 
--- Without using the LIMIT clause all of the data can be fetched at once and is available in the collection after the fetch completes. It can also be used to fetch only a subset of the data-set, e.g. first 10 rows.
+-- Without using the LIMIT clause all of the data can be fetched at once and is available in the collection after the fetch completes.
+-- It can also be used to fetch only a subset of the data-set, e.g. first 10 rows.
 
 DECLARE
   TYPE t_buffer IS TABLE OF countries.country_name%TYPE;
@@ -73,7 +76,8 @@ BEGIN
   CLOSE c_data;
 END;
 
--- REF Cursor is a PL/SQL data-type that holds a reference to a certain SQL statement, which can be passed back to the client and be opened with different queries.
+-- REF Cursor is an Oracle provided type that can be used to declare cursor variables as pointers to specific SQL work area data sets.
+-- Advantage over static CURSOR objects is that they can be passed back to the client or be associated with different queries.
 DECLARE
     TYPE books_rec IS RECORD (
     book_category books.book_category%TYPE,

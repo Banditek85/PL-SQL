@@ -6,11 +6,9 @@
 DECLARE
 v_code VARCHAR2(100) := '
 BEGIN
-dbms_output.put_line(''OLEOLEOLE'');
+    dbms_output.put_line(''OLEOLEOLE'');
 END;';
 
 BEGIN
-
-EXECUTE IMMEDIATE v_code;
-
+    EXECUTE IMMEDIATE v_code;
 END;

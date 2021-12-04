@@ -17,6 +17,7 @@ CREATE OR REPLACE TYPE BODY Animal IS
       RETURN name || '  says woof.';
     END;
 END;
+
 -- ********************************************* --
 
 CREATE OR REPLACE TYPE Rectangle IS OBJECT 
@@ -59,7 +60,8 @@ BEGIN
   dbms_output.put_line(compare_result);
 
   IF box1 > box2 THEN 
-  dbms_output.put_line('First bigger');
-  ELSE dbms_output.put_line('Second bigger');
+    dbms_output.put_line('First bigger');
+  ELSE 
+    dbms_output.put_line('Second bigger');
   END IF;
 END;
